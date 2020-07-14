@@ -1,11 +1,15 @@
 import * as PIXI from 'pixi.js';
 import { Howler } from 'howler';
 import GraphicAssets from './graphics';
+import DirtField from './DirtField';
+import MouseObserver from './MouseObserver';
 
 export default class Game {
     private canvas: HTMLCanvasElement;
     public app: PIXI.Application;
+    public mouseObserver: MouseObserver = new MouseObserver(this);
     public graphics: GraphicAssets;
+    public dirtField: DirtField;
     public paused = false;
     public frameCount = 0;
     private lastRestart = 0;
@@ -18,6 +22,7 @@ export default class Game {
             height: 1080,
             transparent: false,
         });
+        this.dirtField = new DirtField(this, 8);
         this.init();
     }
 
@@ -29,6 +34,7 @@ export default class Game {
     private update(delta: number) {
         if (!this.paused) {
             this.frameCount++;
+            this.dirtField.update();
         }
     }
     public reinit() {
