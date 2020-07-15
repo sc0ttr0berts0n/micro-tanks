@@ -92,8 +92,12 @@ export default class ParticleField {
         const gridPos = new Victor(gridX, gridY);
         const startStrip = Math.max(0, gridPos.x - radius);
         const lengthStrips = radius * 2;
+        const finalStrip = Math.min(
+            startStrip + lengthStrips,
+            this.particleStrips.length
+        );
 
-        for (let i = startStrip; i < startStrip + lengthStrips; i++) {
+        for (let i = startStrip; i < finalStrip; i++) {
             for (let j = 0; j < this.particleStrips[0].slots.length; j++) {
                 let particle = this.particleStrips[i]?.slots[j];
                 if (!particle) debugger;
@@ -120,6 +124,8 @@ export default class ParticleField {
         startStrip: number = 0,
         length: number = this.particleStrips.length
     ) {
+        // clean length
+        length = Math.min(this.particleStrips.length, length);
         let arr = this.particleStrips;
         if (startStrip && length) {
             arr = this.particleStrips.slice(startStrip, startStrip + length);
@@ -130,14 +136,20 @@ export default class ParticleField {
     settleParticles() {
         for (let i = 0; i < this.particleStrips.length; i++) {
             for (let j = this.particleStrips[i].slots.length - 1; j >= 0; j--) {
-                const target = this.particleStrips[i].slots[j];
-                const above = this.particleStrips[i].slots[j - 1];
-                if (target?.name === 'dirt' && above?.name === 'air') {
-                    const firstAir = this.particleStrips[i].slots.splice(
-                        j - 1,
-                        1
-                    )[0];
-                    this.particleStrips[i].slots.unshift(firstAir);
+                const strip = this.particleStrips[i];
+                const target = strip.slots[j];
+                const above = strip.slots[j - 1];
+                const airAboveDirt =
+                    target?.name === 'dirt' && above?.name === 'air';
+                const firstParticleIsAir =
+                    j === strip.slots.length - 1 && target?.name === 'air';
+                if (airAboveDirt) {
+                    strip.slots.splice(j - 1, 1);
+                    strip.slots.unshift(target);
+                    break;
+                } else if (firstParticleIsAir) {
+                    strip.slots.unshift(target);
+                    strip.slots.pop();
                     break;
                 }
             }
