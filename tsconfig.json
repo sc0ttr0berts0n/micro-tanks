@@ -4,7 +4,7 @@
         "allowJs": true,
         "noImplicitAny": true,
         "target": "es6",
-        "lib": ["dom", "es7"],
+        "lib": ["dom", "es2019"],
         "sourceMap": true,
         "outDir": "./public/js/"
     },

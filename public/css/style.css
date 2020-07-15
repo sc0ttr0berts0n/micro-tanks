@@ -17,11 +17,6 @@ html {
     height: 100%;
     background-color: #282228;
 }
-body {
-    background-image: url('../assets/web-bg.gif');
-    background-size: cover;
-    background-position: center;
-}
 .pointer-events-none {
     pointer-events: none;
 }
@@ -34,7 +29,6 @@ canvas,
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: #ccc;
-    pointer-events: none;
 }
 [data-debug-ui] {
     display: none;
