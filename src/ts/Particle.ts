@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 import Game from './game';
 import particleStrip from './ParticleStrip';
-import particleField from './particleField';
+import particleField from './ParticleField';
 import Victor = require('victor');
 
 export default class Particle {
